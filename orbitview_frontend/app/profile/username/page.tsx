@@ -1,15 +1,12 @@
+"use client";
+
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  Globe,
-  Linkedin,
-  Calendar,
-  Building2,
-  ExternalLink,
-} from "lucide-react";
+import { Globe, Linkedin, Calendar, Building2 } from "lucide-react";
 import Image from "next/image";
 import { format, formatDistance } from "date-fns";
 import { Profile, Experience } from "@/app/types/profile";
+import { ChatInterface } from "@/app/chat/ChatInterace";
 
 // This is temporary dummy data - replace with actual API call
 const dummyProfile: Profile = {
@@ -23,7 +20,7 @@ const dummyProfile: Profile = {
   },
   date_of_birth: "2008-04-06",
   byline: "Founding Engineer @ OrbitView | I love people and helping them out",
-  profile_pic: "http://127.0.0.1:8000/profile_pics/1728766936544.jpg",
+  profile_pic: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
   membership: "C",
   website: "https://www.tomzhang.info/",
   linkedin: "https://www.linkedin.com/in/tom-zhang-485341274/",
@@ -35,7 +32,7 @@ const dummyProfile: Profile = {
       employment_type: "SELF_EMPLOYED",
       company: {
         id: 2,
-        logo: "http://127.0.0.1:8000/company-logos/orbitview.jpg",
+        logo: "/company-logos/orbitview.jpg",
         description:
           "OrbitView empowers professionals to create AI-powered versions of themselves, sharing their expertise effortlessly.",
         website: "https://orbitview.net",
@@ -50,7 +47,7 @@ const dummyProfile: Profile = {
       employment_type: "FREELANCE",
       company: {
         id: 3,
-        logo: "http://127.0.0.1:8000/company-logos/ehss_sci_soc.jpg",
+        logo: "/company-logos/ehss.jpg",
         description: "Here for Haig STEM Opportunities, Labs, & Contest Help",
         website: "https://earlhaigsciencesociety.com/",
         type: "CLUB",
@@ -128,68 +125,76 @@ export default function ProfilePage({
   return (
     <div className="min-h-screen bg-gradient-to-b from-orbit-dark via-orbit-primary/10 to-orbit-secondary/10 pt-24">
       <div className="container mx-auto px-4">
-        <Card className="p-8 bg-orbit-dark/50 border-orbit-primary/20">
-          <div className="flex items-start gap-6">
-            <div className="relative w-32 h-32">
-              <Image
-                src={profile.profile_pic}
-                alt={`${profile.user.first_name} ${profile.user.last_name}`}
-                fill
-                className="rounded-xl object-cover"
-              />
-            </div>
-
-            <div className="flex-1">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h1 className="text-3xl font-bold">
-                    {profile.user.first_name} {profile.user.last_name}
-                  </h1>
-                  <p className="text-lg text-muted-foreground">
-                    @{profile.user.username}
-                  </p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="space-y-8">
+            <Card className="p-8 bg-orbit-dark/50 border-orbit-primary/20">
+              <div className="flex items-start gap-6">
+                <div className="relative w-32 h-32">
+                  <Image
+                    src={profile.profile_pic}
+                    alt={`${profile.user.first_name} ${profile.user.last_name}`}
+                    fill
+                    className="rounded-xl object-cover"
+                  />
                 </div>
-                <Button className="bg-orbit-primary hover:bg-orbit-primary/90">
-                  Connect
-                </Button>
+
+                <div className="flex-1">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h1 className="text-3xl font-bold">
+                        {profile.user.first_name} {profile.user.last_name}
+                      </h1>
+                      <p className="text-lg text-muted-foreground">
+                        @{profile.user.username}
+                      </p>
+                    </div>
+                    <Button className="bg-orbit-primary hover:bg-orbit-primary/90">
+                      Connect
+                    </Button>
+                  </div>
+
+                  <p className="mt-4 text-lg">{profile.byline}</p>
+
+                  <div className="flex items-center gap-4 mt-6">
+                    <a
+                      href={profile.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-orbit-secondary hover:text-orbit-primary transition"
+                    >
+                      <Globe className="w-5 h-5" />
+                      Website
+                    </a>
+                    <a
+                      href={profile.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-orbit-secondary hover:text-orbit-primary transition"
+                    >
+                      <Linkedin className="w-5 h-5" />
+                      LinkedIn
+                    </a>
+                    <span className="text-sm text-muted-foreground">
+                      Joined{" "}
+                      {format(new Date(profile.user.date_joined), "MMMM yyyy")}
+                    </span>
+                  </div>
+                </div>
               </div>
+            </Card>
 
-              <p className="mt-4 text-lg">{profile.byline}</p>
-
-              <div className="flex items-center gap-4 mt-6">
-                <a
-                  href={profile.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-orbit-secondary hover:text-orbit-primary transition"
-                >
-                  <Globe className="w-5 h-5" />
-                  Website
-                </a>
-                <a
-                  href={profile.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-orbit-secondary hover:text-orbit-primary transition"
-                >
-                  <Linkedin className="w-5 h-5" />
-                  LinkedIn
-                </a>
-                <span className="text-sm text-muted-foreground">
-                  Joined{" "}
-                  {format(new Date(profile.user.date_joined), "MMMM yyyy")}
-                </span>
+            <div>
+              <h2 className="text-2xl font-bold mb-6">Experience</h2>
+              <div className="space-y-4">
+                {profile.experiences.map((experience, index) => (
+                  <ExperienceCard key={index} experience={experience} />
+                ))}
               </div>
             </div>
           </div>
-        </Card>
 
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-6">Experience</h2>
-          <div className="space-y-4">
-            {profile.experiences.map((experience, index) => (
-              <ExperienceCard key={index} experience={experience} />
-            ))}
+          <div>
+            <ChatInterface profile={profile} />
           </div>
         </div>
       </div>
