@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from dotenv import load_dotenv
-from mongoengine import connect
 import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -54,7 +53,9 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'orbitview.urls'
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:3002',
 ]
 
 
