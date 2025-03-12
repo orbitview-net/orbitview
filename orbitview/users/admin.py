@@ -10,5 +10,4 @@ class ProfileAdmin(admin.ModelAdmin):
 
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Organization)
-admin.site.register(Experience)
 

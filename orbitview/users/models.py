@@ -26,6 +26,7 @@ class Organization(models.Model):
     ORGANIZATION_TYPES = [
         ("CORP", "Corporation"),
         ("NONP", "Nonprofit"),
+        ("CLUB", "Club"),
         ("STARTUP", "Startup"),
         ("GOV", "Government Agency"),
         ("EDU", "Educational Institution"),
@@ -49,6 +50,7 @@ class Organization(models.Model):
 class Experience(models.Model):
     EXPERIENCE_TYPES = [
         ("EDU", "Education"),
+        ("CLUB", "Club"),
         ("WORK", "Work"),
     ]
 
