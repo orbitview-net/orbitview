@@ -23,11 +23,12 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ['id',
                   'user',
                   'date_of_birth',
+                  'byline',
                   'profile_pic',
                   'membership',
                   'website',
                   'linkedin',
-                  'external_links'
+                  'external_links',
         ]
 
 
@@ -72,6 +73,7 @@ class ResumeSerializer(serializers.ModelSerializer):
         fields = ['id',
                   'user',
                   'date_of_birth',
+                  'byline',
                   'profile_pic',
                   'membership',
                   'website',

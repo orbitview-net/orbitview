@@ -11,6 +11,7 @@ class Profile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     date_of_birth = models.DateField()
+    byline = models.CharField(max_length=100, null=True, blank=True)
     profile_pic = models.ImageField(upload_to='profile_pics', default="/default_pfp.jpg")
     membership = models.CharField(max_length=1, choices=MEMBERSHIP_TYPES)
     website = models.URLField(max_length=2083, null=True, blank=True) # for their personal website
