@@ -14,3 +14,9 @@ class ProfileDetailView(generics.RetrieveAPIView):
     queryset = Profile.objects.all()
     serializer_class = ResumeSerializer # still works with the Profile model class
     lookup_field = 'user__username'
+
+
+class OrganizationDetailView(generics.RetrieveAPIView):
+    queryset = Organization.objects.all()
+    serializer_class = ComprehensiveOrganizerSerializer # still works with the Profile model class
+    lookup_field = 'title'

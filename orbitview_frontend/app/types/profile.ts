@@ -35,3 +35,12 @@ export interface Profile {
   external_links: string[] | null;
   experiences: Experience[];
 }
+
+export interface Organization {
+  id: number;
+  logo: string;
+  description: string;
+  website: string;
+  external_links: string[] | null;
+  type: 'CORP' | 'CLUB';
+}

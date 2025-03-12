@@ -12,7 +12,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     date_of_birth = models.DateField()
     byline = models.CharField(max_length=100, null=True, blank=True)
-    profile_pic = models.ImageField(upload_to='profile_pics', default="/default_pfp.jpg")
+    profile_pic = models.ImageField(upload_to='media/profile_pics', default="media/default_pfp.jpg")
     membership = models.CharField(max_length=1, choices=MEMBERSHIP_TYPES)
     website = models.URLField(max_length=2083, null=True, blank=True) # for their personal website
     linkedin = models.URLField(max_length=2083, null=True, blank=True)
@@ -38,7 +38,7 @@ class Organization(models.Model):
     ]
 
     title = models.CharField(max_length=255)
-    logo = models.ImageField(upload_to='company-logos')
+    logo = models.ImageField(upload_to='media/company-logos')
     description = models.TextField(max_length=2000)
     website = models.URLField(max_length=2083, null=True, blank=True)  # for their organization website
     external_links = models.JSONField(null=True, blank=True)
