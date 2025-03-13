@@ -18,11 +18,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-
+from users.views import CustomLoginAPIView, csrf_token_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('profile/', include('users.urls')),
+    path('login/', CustomLoginAPIView.as_view()),
+    path('csrf/', csrf_token_view),
     path('auth/', include('djoser.urls')),
     path("auth/", include("djoser.urls.jwt")),
 ]
