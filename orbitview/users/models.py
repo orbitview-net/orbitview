@@ -42,6 +42,7 @@ class Organization(models.Model):
     title = models.CharField(max_length=255)
     logo = models.ImageField(upload_to='media/company-logos')
     slug = models.SlugField(default="-")
+    slogan = models.CharField(max_length=255, default="-")
     description = models.TextField(max_length=2000)
     website = models.URLField(max_length=2083, null=True, blank=True)  # for their organization website
     external_links = models.JSONField(null=True, blank=True)

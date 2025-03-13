@@ -40,6 +40,7 @@ export interface Organization {
   id: number;
   title: string;
   logo: string;
+  slogan: string;
   description: string;
   website: string;
   external_links: string[] | null;

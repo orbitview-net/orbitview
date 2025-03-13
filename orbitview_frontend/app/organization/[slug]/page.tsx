@@ -107,7 +107,7 @@ export default async function OrganizationPage({
                 </Button>
               </div>
 
-              <p className="mt-4 text-lg">{organization.description}</p>
+              <p className="mt-4 text-lg">{organization.slogan}</p>
 
               <div className="flex items-center gap-4 mt-6">
                 <a
@@ -136,12 +136,7 @@ export default async function OrganizationPage({
           <Card className="p-6 bg-orbit-dark/50 border-orbit-primary/20">
             <h2 className="text-xl font-semibold mb-4">About</h2>
             <p className="text-muted-foreground">
-              OrbitView is revolutionizing the way knowledge is shared and
-              accessed. Our platform enables professionals to create AI-powered
-              digital twins of themselves, making their expertise available to
-              learners worldwide. Through cutting-edge technology and a
-              commitment to educational accessibility, we're building the future
-              of personalized mentorship.
+              {organization.description}
             </p>
           </Card>
         </div>
