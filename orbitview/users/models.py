@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+from .org_industries import INDUSTRY_CHOICES
 
 
 class Profile(models.Model):
@@ -45,6 +46,7 @@ class Organization(models.Model):
     website = models.URLField(max_length=2083, null=True, blank=True)  # for their organization website
     external_links = models.JSONField(null=True, blank=True)
     type = models.CharField(max_length=20, choices=ORGANIZATION_TYPES, default="CORP")
+    industry = models.CharField(max_length=255, choices=INDUSTRY_CHOICES, default="EDUCATION")
 
     def __str__(self):
         return self.title

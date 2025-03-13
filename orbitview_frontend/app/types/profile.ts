@@ -38,6 +38,7 @@ export interface Profile {
 
 export interface Organization {
   id: number;
+  title: string;
   logo: string;
   description: string;
   website: string;

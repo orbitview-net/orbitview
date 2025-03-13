@@ -37,6 +37,7 @@ class ComprehensiveOrganizationSerializer(serializers.ModelSerializer):
         model = Organization
         fields = [
             'id',
+            'title',
             'logo',
             'slug',
             'description',
@@ -50,6 +51,7 @@ class SimpleOrganizationSerializer(serializers.ModelSerializer):
         model = Organization
         fields = [
             'id',
+            'title',
             'logo',
             'slug',
             'description',

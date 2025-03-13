@@ -7,9 +7,10 @@ import { Profile, Experience } from "@/app/types/profile";
 import { ChatInterface } from "@/app/chat/ChatInterace";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { backendServer } from "@/data/backendServer";
 
 async function getProfile(username: string): Promise<Profile> {
-  const res = await fetch(`http://127.0.0.1:8000/profile/${username}/`, {
+  const res = await fetch(`${backendServer}/profile/${username}/`, {
     next: { revalidate: 60 }, // Revalidate every minute
   });
 
