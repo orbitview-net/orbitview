@@ -32,24 +32,26 @@ class ProfileSerializer(serializers.ModelSerializer):
         ]
 
 
-class ComprehensiveOrganizerSerializer(serializers.ModelSerializer):
+class ComprehensiveOrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organization
         fields = [
             'id',
             'logo',
+            'slug',
             'description',
             'website',
             'external_links',
             'type'
         ]
 
-class SimpleOrganizerSerializer(serializers.ModelSerializer):
+class SimpleOrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organization
         fields = [
             'id',
             'logo',
+            'slug',
             'description',
             'website',
             'type'
@@ -57,7 +59,7 @@ class SimpleOrganizerSerializer(serializers.ModelSerializer):
 
 
 class ExperienceSerializer(serializers.ModelSerializer):
-    company = SimpleOrganizerSerializer()
+    company = SimpleOrganizationSerializer()
 
     class Meta:
         model = Experience

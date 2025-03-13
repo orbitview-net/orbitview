@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 from django.contrib.auth.models import User
 
 
@@ -39,6 +40,7 @@ class Organization(models.Model):
 
     title = models.CharField(max_length=255)
     logo = models.ImageField(upload_to='media/company-logos')
+    slug = models.SlugField(default="-")
     description = models.TextField(max_length=2000)
     website = models.URLField(max_length=2083, null=True, blank=True)  # for their organization website
     external_links = models.JSONField(null=True, blank=True)
@@ -46,6 +48,21 @@ class Organization(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def save(self, force_insert = ..., force_update = ..., using = ..., update_fields = ...):
+        if not self.slug or self.slug == "-":
+            base_slug = slugify(self.title)
+            unique_slug = base_slug
+            count = 1
+            
+            # Ensure slug uniqueness
+            while Organization.objects.filter(slug=unique_slug).exists():
+                unique_slug = f"{base_slug}-{count}"
+                count += 1
+
+            self.slug = unique_slug
+
+        return super().save(force_insert, force_update, using, update_fields)
 
 
 class Experience(models.Model):
