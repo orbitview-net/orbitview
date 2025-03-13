@@ -49,9 +49,6 @@ function ExperienceCard({ experience }: ExperienceCardProps) {
         </div>
         <div className="flex-1">
           <h3 className="text-lg font-semibold">{experience.title}</h3>
-          <p className="text-orbit-secondary">
-            {experience.company.description}
-          </p>
           <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
             <Calendar className="w-4 h-4" />
             <span>
@@ -78,6 +75,10 @@ function ExperienceCard({ experience }: ExperienceCardProps) {
               {experience.employment_type.replace("_", " ")}
             </span>
           </div>
+          <br />
+          <p className="text-orbit-secondary">
+            {experience.company.description}
+          </p>
         </div>
       </div>
     </Card>
