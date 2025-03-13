@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ThemeProvider } from "@/components/theme-provider";
+import logo from ".././public/logo.png"
 import Image from 'next/image';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -29,7 +30,7 @@ export default function RootLayout({
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Image
-                  src="/logo.png"
+                  src={logo}
                   alt="OrbitView Logo"
                   width={32}
                   height={32}
