@@ -16,3 +16,4 @@ wheel==0.45.1
 mysqlclient
 pillow
 graphene-django
+djoser

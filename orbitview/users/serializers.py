@@ -14,6 +14,26 @@ class UserSerializer(serializers.ModelSerializer):
             'date_joined',
         ]
 
+class UserCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'username', 
+            'first_name',
+            'last_name', 
+            'email',
+            'password',
+        ]
+
+class CurrentUserSerializer(serializers.ModelSerializer):
+    # used for moments when privacy is not a concern
+    class Meta:
+        model = User
+        fields = ['id', 
+                  'username', 
+                  'email', 
+                  'first_name', 
+                  'last_name']
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer() # serializers.StringRelatedField(read_only=True)  # Returns the username instead of ID
