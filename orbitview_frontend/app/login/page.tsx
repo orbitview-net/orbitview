@@ -1,13 +1,54 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, Mail, Lock } from "lucide-react";
-import logo from "../../public/logo.png"
+import { ArrowRight, Lock, PersonStanding } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import { backendServer } from "@/data/backendServer";
 
 export default function LoginPage() {
+  const [username_or_email, setUsername_or_Email] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [save_info, setSave_info] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch(`${backendServer}/login/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username_or_email,
+          password,
+          save_info,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Invalid credentials");
+      }
+
+      const data = await response.json();
+      // Handle successful login here (e.g., store token, redirect)
+      console.log("Login successful:", data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-orbit-dark via-orbit-primary/10 to-orbit-secondary/10 flex items-center justify-center p-4">
       <Card className="w-full max-w-lg bg-orbit-dark/50 border-orbit-primary/20">
@@ -15,7 +56,7 @@ export default function LoginPage() {
           <div className="flex flex-col items-center mb-8">
             <div className="flex items-center gap-2 mb-6">
               <Image
-                src={logo}
+                src="/logo.png"
                 alt="OrbitView Logo"
                 width={40}
                 height={40}
@@ -33,16 +74,26 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <form className="space-y-6">
+          {error && (
+            <div className="mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-lg text-destructive text-center">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="username_or_email">Username or Email</Label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <PersonStanding className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <Input
-                  id="email"
-                  type="email"
+                  id="username_or_email"
+                  type="text"
+                  value={username_or_email}
+                  onChange={(e) => setUsername_or_Email(e.target.value)}
                   placeholder="Enter your email"
                   className="pl-10 bg-orbit-dark/30 border-orbit-primary/20"
+                  required
+                  disabled={isLoading}
                 />
               </div>
             </div>
@@ -54,8 +105,12 @@ export default function LoginPage() {
                 <Input
                   id="password"
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   className="pl-10 bg-orbit-dark/30 border-orbit-primary/20"
+                  required
+                  disabled={isLoading}
                 />
               </div>
             </div>
@@ -65,6 +120,8 @@ export default function LoginPage() {
                 <input
                   type="checkbox"
                   className="w-4 h-4 rounded border-orbit-primary/20 bg-orbit-dark/30"
+                  disabled={isLoading}
+                  onChange={() => setSave_info(!save_info)}
                 />
                 <span className="text-sm text-muted-foreground">
                   Remember me
@@ -78,8 +135,12 @@ export default function LoginPage() {
               </Link>
             </div>
 
-            <Button className="w-full bg-orbit-primary hover:bg-orbit-primary/90 h-12">
-              Sign In
+            <Button
+              type="submit"
+              className="w-full bg-orbit-primary hover:bg-orbit-primary/90 h-12"
+              disabled={isLoading}
+            >
+              {isLoading ? "Signing in..." : "Sign In"}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
 
@@ -99,6 +160,7 @@ export default function LoginPage() {
                 <Button
                   variant="outline"
                   className="border-orbit-primary/20 hover:bg-orbit-primary/10"
+                  disabled={isLoading}
                 >
                   <Image
                     src="https://www.google.com/favicon.ico"
@@ -112,15 +174,16 @@ export default function LoginPage() {
                 <Button
                   variant="outline"
                   className="border-orbit-primary/20 hover:bg-orbit-primary/10"
+                  disabled={isLoading}
                 >
                   <Image
-                    src="https://microsoft.com/favicon.ico"
-                    alt="Microsoft"
+                    src="https://github.com/favicon.ico"
+                    alt="GitHub"
                     width={20}
                     height={20}
                     className="mr-2"
                   />
-                  Microsoft
+                  GitHub
                 </Button>
               </div>
             </div>

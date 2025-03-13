@@ -32,11 +32,17 @@ class OrganizationDetailView(generics.RetrieveAPIView):
     lookup_field = 'slug'
 
 
+
+
+
 class CustomLoginAPIView(APIView):
 
     permission_classes = []
 
     def post(self, request):
+
+        print(request.data)
+
         username_or_email = request.data.get("username_or_email")
         password = request.data.get("password")
         save_info = request.data.get("save_info") # save login information? or not?
