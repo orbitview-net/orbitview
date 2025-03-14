@@ -11,12 +11,17 @@ import { backendServer } from "@/data/backendServer";
 
 async function getProfile(username: string): Promise<Profile> {
   const res = await fetch(`${backendServer}/profile/${username}/`, {
-    next: { revalidate: 60 }, // Revalidate every minute
+    method: "GET",
+    credentials: "include",
+    cache: "no-store",
   });
 
   if (!res.ok) {
     if (res.status === 404) {
       notFound();
+    }
+    if (res.status === 401) {
+      console.log("Profile not fetched due to 401");
     }
     throw new Error("Failed to fetch profile");
   }

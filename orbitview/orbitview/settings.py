@@ -21,7 +21,9 @@ load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-DEBUG = True
+PRODUCTION = False
+
+DEBUG = False if PRODUCTION else True
 
 ALLOWED_HOSTS = []
 
@@ -62,6 +64,17 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3002',
 ]
 
+CORS_ALLOW_CREDENTIALS = True
+SESSION_COOKIE_SECURE = True if PRODUCTION else False
+CSRF_COOKIE_SECURE = True if PRODUCTION else False
+
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:3002',
+]
 
 TEMPLATES = [
     {
@@ -141,6 +154,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {    
     'COERCE_DECIMAL_TO_STRING': False, # crucial setting
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'users.authentication.CookieJWTAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
@@ -152,11 +166,11 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=120),  # token lifetime
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': False, 
-    'BLACKLIST_AFTER_ROTATION': True,
-    'ALGORITHM': 'HS256',
-    'SIGNING_KEY': os.getenv("JWT_SIGNING_KEY"),
-    'AUTH_HEADER_TYPES': ('Bearer', 'JWT'),
+    # 'ROTATE_REFRESH_TOKENS': False, 
+    # 'BLACKLIST_AFTER_ROTATION': True,
+    # 'ALGORITHM': 'HS256',
+    # 'SIGNING_KEY': os.getenv("JWT_SIGNING_KEY"),
+    # 'AUTH_HEADER_TYPES': ('Bearer', 'JWT'),
 }
 
 DJOSER = {

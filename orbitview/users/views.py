@@ -10,7 +10,7 @@ from datetime import timedelta
 from .models import Profile
 from .serializers import *
 from .pagination import ProfilePagination
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.decorators import api_view, permission_classes
 
 
@@ -22,30 +22,25 @@ class ProfileListView(generics.ListAPIView):
 
 class ProfileDetailView(generics.RetrieveAPIView):
     queryset = Profile.objects.all()
+    permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = ResumeSerializer # still works with the Profile model class
     lookup_field = 'user__username'
 
 
 class OrganizationDetailView(generics.RetrieveAPIView):
     queryset = Organization.objects.all()
+    permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = ComprehensiveOrganizationSerializer # still works with the Profile model class
     lookup_field = 'slug'
 
 
-
-
-
 class CustomLoginAPIView(APIView):
-
     permission_classes = []
 
     def post(self, request):
-
-        print(request.data)
-
         username_or_email = request.data.get("username_or_email")
         password = request.data.get("password")
-        save_info = request.data.get("save_info") # save login information? or not?
+        save_info = request.data.get("save_info")  # save login information? or not?
 
         # Check if the provided "username_or_email" is a username or an email
         user = None
@@ -57,59 +52,53 @@ class CustomLoginAPIView(APIView):
         if user is not None and user.check_password(password):
             # Create JWT tokens
             refresh = RefreshToken.for_user(user)
-            
-            # fetch the user who just logged in
+            access_token = str(refresh.access_token)  # Save the access token here
+
+            # Fetch the user profile
             profile = get_object_or_404(Profile, user__username=user.username)
             serializer = ProfileSerializer(profile)
-            
-            response = JsonResponse({
-                'message': "Login successful",
-                'user_info': serializer.data,
-            })
 
-            print(response) # for testing purposes
-            
-            
+
             if save_info:
                 print("Upon user request: Information is being saved")
-                response.set_cookie(
-                    'access_token',
-                    refresh.access_token,
-                    httponly=True,
-                    secure=True,
-                    samesite="Lax",
-                    max_age=timedelta(days=1)
-                )
-
-                response.set_cookie(
-                    'refresh_token',
-                    str(refresh),
-                    httponly=True,
-                    secure=True,
-                    samesite="Lax",
-                    max_age=timedelta(days=7)
-                )
-
 
             final_response = Response({
-                'access': str(refresh.access_token),
-                'refresh': str(refresh),
+                'access_token': access_token,  # Use the saved access token here
+                'refresh_token': str(refresh),
                 'logged_in_user': serializer.data,
-                
             }, status=status.HTTP_200_OK)
 
-            print({
-                'access': str(refresh.access_token),
-                'refresh': str(refresh),
-                'logged_in_user': serializer.data,
-                
-            }) # testing purposes ONLY'''
+            # Set the access and refresh tokens in cookies
+            final_response.set_cookie(
+                'access_token',
+                access_token,
+                httponly=True,
+                secure=False, # Change to True in production (requires HTTPS)
+                samesite="Lax",
+                max_age=86400
+            )
+            print("Cookies set 1")
+
+
+            final_response.set_cookie(
+                'refresh_token',
+                str(refresh),
+                httponly=True,
+                secure=False, # Change to True in production (requires HTTPS)
+                samesite="Lax",
+                max_age=604800
+            )
+
+            '''If secure=True, the cookies will only be set over HTTPS.
+If testing on localhost with HTTP, set secure=False.'''
+
+            print("Cookies set 1")
+            print(final_response.data)
 
             return final_response
-        
+
         print("Login FAILED!")
         return Response({"detail": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED)
-    
 
 
 @api_view(['GET'])

@@ -46,9 +46,12 @@ export default function LoginPage() {
       // Handle successful login here (e.g., store token, redirect)
       console.log("Login successful:", data);
 
-      localStorage.setItem("ov-accessToken", data.access);
-      localStorage.setItem("ov-refreshToken", data.refresh);
-      localStorage.setItem("current-ov-user", JSON.stringify(data.logged_in_user));
+      // localStorage.setItem("ov-accessToken", data.access);
+      // localStorage.setItem("ov-refreshToken", data.refresh);
+      // localStorage.setItem(
+      //   "current-ov-user",
+      //   JSON.stringify(data.logged_in_user)
+      // );
 
       /*
       localStorage.setItem("current-ov-user-id", data.logged_in_user.id);
@@ -58,7 +61,19 @@ export default function LoginPage() {
       localStorage.setItem("current-ov-user-date-joined", data.logged_in_user.date_joined);
       */
 
-      localStorage.setItem("ov-user-authenticated", "true");
+      // localStorage.setItem("ov-user-authenticated", "true");
+
+      // let csrfData = await fetch(`${backendServer}/csrf/`, {
+      //   method: "GET", // Explicitly specify the method
+      //   headers: {
+      //     Authorization: `JWT ${data.access}`,
+      //     "Content-Type": "application/json",
+      //   },
+      // });
+
+      // let json = await csrfData.json();
+
+      // sessionStorage.setItem("csrfToken", json.csrfToken);
 
       router.push("/");
     } catch (err) {
