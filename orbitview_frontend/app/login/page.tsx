@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { backendServer } from "@/data/backendServer";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [username_or_email, setUsername_or_Email] = useState("");
@@ -16,6 +17,8 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [save_info, setSave_info] = useState(false);
   const [error, setError] = useState("");
+
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,6 +45,22 @@ export default function LoginPage() {
       const data = await response.json();
       // Handle successful login here (e.g., store token, redirect)
       console.log("Login successful:", data);
+
+      localStorage.setItem("ov-accessToken", data.access);
+      localStorage.setItem("ov-refreshToken", data.refresh);
+      localStorage.setItem("current-ov-user", JSON.stringify(data.logged_in_user));
+
+      /*
+      localStorage.setItem("current-ov-user-id", data.logged_in_user.id);
+      localStorage.setItem("current-ov-user-username", data.logged_in_user.username);
+      localStorage.setItem("current-ov-user-first-name", data.logged_in_user.first_name);
+      localStorage.setItem("current-ov-user-last-name", data.logged_in_user.last_name);
+      localStorage.setItem("current-ov-user-date-joined", data.logged_in_user.date_joined);
+      */
+
+      localStorage.setItem("ov-user-authenticated", "true");
+
+      router.push("/");
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -177,13 +196,13 @@ export default function LoginPage() {
                   disabled={isLoading}
                 >
                   <Image
-                    src="https://github.com/favicon.ico"
-                    alt="GitHub"
+                    src="https://microsoft.com/favicon.ico"
+                    alt="Microsoft"
                     width={20}
                     height={20}
                     className="mr-2"
                   />
-                  GitHub
+                  Microsoft
                 </Button>
               </div>
             </div>
